@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>상세 시간표</title>
+    <style>
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: #f8f9fa; }
+        /* 상단 네비게이션 - 메인 돌아가기 경로 강화 */
+        .nav { background: #2c3e50; color: white; padding: 10px; display: flex; justify-content: center; gap: 15px; position: sticky; top: 0; z-index: 1000; }
+        .nav a { 
+            color: white; text-decoration: none; border: 1px solid #fff; 
+            padding: 6px 15px; border-radius: 20px; font-weight: bold; font-size: 13px; transition: 0.2s; 
+        }
+        .nav a:hover { background: white; color: #2c3e50; }
+        
+        .container { max-width: 850px; margin: 20px auto; padding: 15px; background: white; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        h2 { text-align: center; color: #2c3e50; font-size: 1.2em; margin-bottom: 15px; }
+        
+        /* 시간표 사이즈 축소 및 고정 */
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 0.85em; }
+        th, td { border: 1px solid #eee; text-align: center; vertical-align: middle; }
+        th { background: #4a90e2; color: white; height: 35px; }
+        td { height: 65px; padding: 2px; } /* 칸 높이를 100px -> 65px로 대폭 축소 */
+        .period-col { background: #f1f3f5; font-weight: bold; width: 45px !important; color: #666; }
+        
+        .sub { font-weight: bold; display: block; color: #222; margin-bottom: 2px; font-size: 1.05em; }
+        .tea { font-size: 0.85em; color: #888; display: block; }
+        .room { font-size: 0.8em; color: #4a90e2; display: block; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+<div class="nav">
+    <a id="prev" href="#">◀ 이전</a>
+    <a href="index.html" style="background: #4a90e2; border-color: #4a90e2;">🏠 메인으로 돌아가기</a>
+    <a id="next" href="#">다음 ▶</a>
+</div>
+
+<div class="container">
+    <h2 id="nameTag">00번 학생 시간표</h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 45px;">교시</th>
+                <th>월</th><th>화</th><th>수</th><th>목</th><th>금</th>
+            </tr>
+        </thead>
+        <tbody id="timetableBody"></tbody>
+    </table>
+</div>
+
+<script>
+    // [중요] 각 파일마다 이 번호를 1~31로 수정하세요
+    const studentNo = 25; 
+
+    // 7교시 데이터
+    const scheduleData = [
+        ["1", ["수학과제탐구", "김기웅", "3-3"], ["생활과윤리", "김진영", "3-8"], ["생활과윤리", "김진영", "3-8"], ["화법과작문", "옥영균", "3-6"], ["심화국어", "윤태호", "3-5"]],
+        ["2", ["영화감상과비평", "박영선", "3-1"], ["화법과작문", "옥영균", "3-6"], ["심화국어", "윤태호", "3-5"], ["실용경제", "박해선", "3-1"], ["일본문화,최기청","3-1"]],
+        ["3", ["사회", "박해선", "3-1"], ["생활과과학", "김학영", "3-1"], ["체육탐구", "강희철", "3-1"], ["수학과제탐구", "김기웅", "3-3"], ["영어회화", "최명한", "3-2"]],
+        ["4", ["미술창작", "천지남", "미술실"], ["수학과제탐구", "김기웅", "3-3"], ["창체", "박해선", "3-1"], ["영어회화", "최명한", "3-2"], ["생활과과학", "김학영", "3-1"]],
+        ["5", ["생활과윤리", "김진영", "3-8"], ["공강", "박지향", "3-1"], ["동아리", "", ""], ["음악감상과비평", "한지인", "음악실"], ["사회", "박해선", "3-1"]],
+        ["6", ["심화국어", "윤태호", "3-5"], ["실용경제", "박해선", "3-1"], ["동아리", "", ""], ["사회", "박해선", "3-1"], ["화법과작문", "옥영균", "3-6"]],
+        ["7", ["체육탐구", "강희철", "3-1"], ["영어회화", "최명한", "3-2"], ["", "", ""], ["일본문화,최기청","3-1"], ["채움", "-", "3-1"]]
+    ];
+
+    document.getElementById('nameTag').innerText = `${studentNo}번 학생 시간표`;
+    
+    // 네비게이션 설정
+    const p = studentNo > 1 ? studentNo - 1 : 31;
+    const n = studentNo < 31 ? studentNo + 1 : 1;
+    document.getElementById('prev').href = `test-${p}.html`;
+    document.getElementById('next').href = `test-${n}.html`;
+
+    const tbody = document.getElementById('timetableBody');
+    scheduleData.forEach(row => {
+        let tr = document.createElement('tr');
+        row.forEach((cell, idx) => {
+            let td = document.createElement('td');
+            if(idx === 0) {
+                td.innerText = cell;
+                td.className = 'period-col';
+            } else {
+                td.innerHTML = `<span class="sub">${cell[0]}</span><span class="tea">${cell[1]}</span><span class="room">${cell[2]}</span>`;
+            }
+            tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+    });
+</script>
+</body>
+</html>
